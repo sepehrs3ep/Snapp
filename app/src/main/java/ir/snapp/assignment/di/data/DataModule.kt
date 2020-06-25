@@ -7,6 +7,7 @@ import ir.snapp.assignment.data.utils.KeyValueStorage
 import ir.snapp.assignment.di.app.ApplicationContext
 import ir.snapp.assignment.di.data.api.RetrofitModule
 import ir.snapp.assignment.di.data.explore.ExploreModule
+import ir.snapp.assignment.di.data.persistent.PersistentModule
 import javax.inject.Singleton
 
 /**
@@ -18,7 +19,8 @@ import javax.inject.Singleton
 @Module(
     includes = [
         RetrofitModule::class,
-        ExploreModule::class
+        ExploreModule::class,
+        PersistentModule::class
     ]
 )
 object DataModule {
