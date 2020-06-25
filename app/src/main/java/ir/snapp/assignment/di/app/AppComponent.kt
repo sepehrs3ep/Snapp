@@ -5,6 +5,8 @@ import dagger.Component
 import dagger.android.AndroidInjectionModule
 import ir.snapp.assignment.App
 import ir.snapp.assignment.di.data.DataModule
+import ir.snapp.assignment.di.screen.ActivityModule
+import ir.snapp.assignment.di.screen.ViewModelsModule
 import javax.inject.Singleton
 
 /**
@@ -19,7 +21,9 @@ import javax.inject.Singleton
     modules = [
         AndroidInjectionModule::class,
         AppModule::class,
-        DataModule::class
+        DataModule::class,
+        ActivityModule::class,
+        ViewModelsModule::class
     ]
 )
 interface AppComponent {
