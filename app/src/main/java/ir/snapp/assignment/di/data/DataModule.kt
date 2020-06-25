@@ -1,7 +1,12 @@
 package ir.snapp.assignment.di.data
 
+import android.content.Context
 import dagger.Module
+import dagger.Provides
+import ir.snapp.assignment.data.utils.KeyValueStorage
+import ir.snapp.assignment.di.app.ApplicationContext
 import ir.snapp.assignment.di.data.api.RetrofitModule
+import javax.inject.Singleton
 
 /**
  * Created by Sepehr Sadri on 6/25/2020.
@@ -14,4 +19,17 @@ import ir.snapp.assignment.di.data.api.RetrofitModule
         RetrofitModule::class
     ]
 )
-object DataModule
+object DataModule {
+
+    @Provides
+    @Singleton
+    fun provideKeyValueStorage(
+        @ApplicationContext context: Context
+    ): KeyValueStorage {
+        return KeyValueStorage(
+            KeyValueStorage.getPrivateSharedPreferences(
+                context
+            )
+        )
+    }
+}
