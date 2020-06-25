@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import ir.snapp.assignment.di.screen.PerFragment
 import ir.snapp.assignment.ui.screens.dashboard.DashboardFragment
+import ir.snapp.assignment.ui.screens.requirement_satisfier.RequirementSatisfierFragment
 
 /**
  * Created by Sepehr Sadri on 6/25/2020.
@@ -18,4 +19,8 @@ abstract class DashboardActivityModule {
     @PerFragment
     @ContributesAndroidInjector
     abstract fun contributeMainDashboardFragment(): DashboardFragment
+
+    @PerFragment
+    @ContributesAndroidInjector
+    abstract fun contributeRequirementSatisfierFragment(): RequirementSatisfierFragment
 }

@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import ir.snapp.assignment.di.utils.view_model.ViewModelKey
 import ir.snapp.assignment.ui.screens.dashboard.DashboardViewModel
+import ir.snapp.assignment.ui.screens.requirement_satisfier.RequirementSatisfierViewModel
 
 /**
  * Created by Sepehr Sadri on 6/25/2020.
@@ -21,4 +22,11 @@ abstract class DashboardViewModelsModule {
     @IntoMap
     @ViewModelKey(DashboardViewModel::class)
     abstract fun bindMainDashboardViewModel(viewModel: DashboardViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RequirementSatisfierViewModel::class)
+    abstract fun bindRequirementSatisfierViewModel(
+        viewModel: RequirementSatisfierViewModel
+    ): ViewModel
 }
