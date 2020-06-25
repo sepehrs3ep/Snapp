@@ -11,4 +11,19 @@
         android:label="dashboard_fragment"
         tools:layout="@layout/fragment_dashboard" />
 
+    <action
+        android:id="@+id/navigate_to_requirementSatisfierFragment"
+        app:destination="@id/requirementSatisfierFragment"
+        app:enterAnim="@anim/fragment_fade_enter"
+        app:exitAnim="@anim/fragment_fade_exit"
+        app:launchSingleTop="true"
+        app:popEnterAnim="@anim/fragment_open_enter"
+        app:popExitAnim="@anim/fragment_open_exit" />
+
+    <fragment
+        android:id="@+id/requirementSatisfierFragment"
+        android:name="ir.snapp.assignment.ui.screens.requirement_satisfier.RequirementSatisfierFragment"
+        android:label="requirement_satisfier_fragment"
+        tools:layout="@layout/fragment_requirement_satisfier" />
+
 </navigation>
