@@ -122,4 +122,8 @@ dependencies {
     // coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"
+
+    implementation("com.mapbox.mapboxsdk:mapbox-android-sdk:$rootProject.map") {
+        exclude group: 'com.google.code.gson', module: 'gson'
+    }
 }
