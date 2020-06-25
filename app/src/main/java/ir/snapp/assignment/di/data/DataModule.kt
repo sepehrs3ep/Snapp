@@ -6,6 +6,7 @@ import dagger.Provides
 import ir.snapp.assignment.data.utils.KeyValueStorage
 import ir.snapp.assignment.di.app.ApplicationContext
 import ir.snapp.assignment.di.data.api.RetrofitModule
+import ir.snapp.assignment.di.data.explore.ExploreModule
 import javax.inject.Singleton
 
 /**
@@ -16,7 +17,8 @@ import javax.inject.Singleton
  */
 @Module(
     includes = [
-        RetrofitModule::class
+        RetrofitModule::class,
+        ExploreModule::class
     ]
 )
 object DataModule {
