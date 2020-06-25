@@ -4,6 +4,7 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import ir.snapp.assignment.App
+import ir.snapp.assignment.di.data.DataModule
 import javax.inject.Singleton
 
 /**
@@ -17,7 +18,8 @@ import javax.inject.Singleton
 @Component(
     modules = [
         AndroidInjectionModule::class,
-        AppModule::class
+        AppModule::class,
+        DataModule::class
     ]
 )
 interface AppComponent {
