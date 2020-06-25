@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Snapp</string>
 
+    <string name="mapbox_access_token">pk.eyJ1Ijoic2VwaXNhZHJpIiwiYSI6ImNrYnV0bHB5MzBtcXkyc2xpZTc4Z3k1azEifQ._aZutSM6ueQKqWoB1T3bYw</string>
+
     <!-- RequirementSatisfier Screen -->
     <string name="access_location_permission">Snapp needs access to your phone location</string>
     <string name="permission_bio">Snapp needs your permission!</string>

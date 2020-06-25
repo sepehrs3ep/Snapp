@@ -4,6 +4,7 @@ import android.app.Application
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import ir.snapp.assignment.components.logging.Logger
+import ir.snapp.assignment.components.map.MapProvider
 import ir.snapp.assignment.di.app.AppInjector
 import javax.inject.Inject
 
@@ -23,6 +24,8 @@ class App : Application(), HasAndroidInjector {
         Logger.init()
 
         AppInjector.init(this)
+
+        MapProvider.init(this)
     }
 
     override fun androidInjector() = androidInjector

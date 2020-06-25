@@ -7,21 +7,32 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import ir.snapp.assignment.R
-import ir.snapp.assignment.ui.navigation.NavigationFragment
+import ir.snapp.assignment.components.map.MapProvider
 import ir.snapp.assignment.ui.navigation.NavigationViewModel
+import ir.snapp.assignment.ui.utils.BaseMapFragment
 import javax.inject.Inject
 
-class DashboardFragment : NavigationFragment() {
+class DashboardFragment : BaseMapFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var mapProvider: MapProvider
 
     private val viewModel: DashboardViewModel by viewModels { viewModelFactory }
     override fun getViewModel(): NavigationViewModel = viewModel
 
+    override fun getMapLayoutContainer() = R.layout.fragment_dashboard
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_dashboard, container, false)
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        mapView.getMapAsync {
+            mapProvider.onMapReady(it)
+        }
+        return view
     }
 }
