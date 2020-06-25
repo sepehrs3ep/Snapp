@@ -1,6 +1,7 @@
 package ir.snapp.assignment
 
 import android.app.Application
+import ir.snapp.assignment.components.logging.Logger
 
 /**
  * Created by Sepehr Sadri on 6/25/2020.
@@ -12,5 +13,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        Logger.init()
     }
 }
