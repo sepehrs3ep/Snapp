@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion 29
@@ -8,30 +10,116 @@ android {
 
     defaultConfig {
         applicationId "ir.snapp.assignment"
-        minSdkVersion 21
-        targetSdkVersion 29
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
-        versionName "1.0"
-
+        versionName "0.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        setProperty("archivesBaseName", "Snapp Interview Assignment App v$versionName")
+        vectorDrawables.useSupportLibrary true
     }
 
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        buildTypes {
+            debug {
+                minifyEnabled false
+                applicationIdSuffix ".debug"
+            }
+
+            release {
+                minifyEnabled true
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+                debuggable false
+                zipAlignEnabled true
+                android.applicationVariants.all { variant ->
+                    variant.outputs.all {
+                        outputFileName = "SnappAssignment-${defaultConfig.versionName}-${defaultConfig.versionCode}-${variant.buildType.name}.apk"
+                    }
+                }
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            returnDefaultValues = true
         }
     }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.kotlin"
 
+    implementation "androidx.appcompat:appcompat:$rootProject.androidX.appCompat"
+    implementation "androidx.core:core-ktx:$rootProject.androidX.coreKTX"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.androidX.constraintlayout"
+
+    // Lifecycle
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.androidX.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.androidX.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.androidX.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$rootProject.androidX.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.androidX.lifecycle"
+
+    // Fragments & Navigation Components
+    implementation "androidx.fragment:fragment-ktx:$rootProject.androidX.fragment"
+    implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.androidX.navigation"
+    implementation("androidx.navigation:navigation-ui-ktx:$rootProject.androidX.navigation") {
+        exclude group: 'com.google.android.material', module: 'material'
+    }
+
+    // Dagger
+    kapt "com.google.dagger:dagger-compiler:$rootProject.dagger"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
+    implementation "com.google.dagger:dagger:$rootProject.dagger"
+    implementation "com.google.dagger:dagger-android:$rootProject.dagger"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.dagger"
+
+    // UI
+    implementation "androidx.recyclerview:recyclerview:$rootProject.androidX.recyclerView"
+    implementation "com.google.android.material:material:$rootProject.androidX.material"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$rootProject.androidX.swipeRefreshLayout"
+
+    // Networking
+    implementation "com.google.code.gson:gson:|$rootProject.gson"
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttp"
+
+    //Room
+    implementation "androidx.room:room-runtime:$rootProject.room"
+    kapt "androidx.room:room-compiler:$rootProject.room"
+    implementation "androidx.room:room-ktx:$rootProject.room"
+
+    // Tools
+    implementation "com.jakewharton.timber:timber:$rootProject.timber"
+
+    // Test
+    testImplementation "junit:junit:$rootProject.testJUnit"
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.testAndroidXJUnit"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.testEspresso"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$rootProject.mockito"
+    testImplementation "org.mockito:mockito-inline:$rootProject.mockitoInline"
+    testImplementation "android.arch.core:core-testing:$rootProject.androidX.lifecycle"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$rootProject.coroutines"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$rootProject.dagger"
+    kaptTest "com.google.dagger:dagger-compiler:$rootProject.dagger"
+
+    //Gms Location
+    implementation "com.google.android.gms:play-services-location:$rootProject.gmsLocation"
+
+    // coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"
 }
