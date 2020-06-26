@@ -1,9 +1,21 @@
 package ir.snapp.assignment.ui.screens.dashboard
 
 import androidx.lifecycle.Observer
+import com.mapbox.mapboxsdk.annotations.Marker
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
+import com.mapbox.mapboxsdk.geometry.LatLngBounds
+import ir.snapp.assignment.R
+import ir.snapp.assignment.components.map.MapProvider
 import ir.snapp.assignment.components.permission.PermissionProvider
+import ir.snapp.assignment.components.resource.ResourceManager
+import ir.snapp.assignment.data.repositories.explore.ExploreSingleSourceOfTruthDataSource
+import ir.snapp.assignment.data.repositories.map.MapFunctionsImpl
+import ir.snapp.assignment.data.utils.Result
+import ir.snapp.assignment.models.vehicle.Vehicle
 import ir.snapp.assignment.ui.navigation.NavigationViewModel
 import ir.snapp.assignment.utils.gps.GpsStateMonitor
+import ir.snapp.assignment.utils.map.toLocations
+import ir.snapp.assignment.utils.map.toMarker
 import javax.inject.Inject
 
 /**
@@ -14,11 +26,35 @@ import javax.inject.Inject
  */
 class DashboardViewModel @Inject constructor(
     gpsStateMonitor: GpsStateMonitor,
-    permissionProvider: PermissionProvider
+    private val permissionProvider: PermissionProvider,
+    private val exploreSingleSourceOfTruthDataSource: ExploreSingleSourceOfTruthDataSource,
+    private val mapProvider: MapProvider,
+    private val mapFunctionsImpl: MapFunctionsImpl,
+    private val resourceManager: ResourceManager
 ) : NavigationViewModel() {
 
+    private val vehiclesList: MutableList<Vehicle> = ArrayList()
+    private val vehiclesMarkers: MutableList<Marker> = ArrayList()
+
+    private val vehiclesListResponseObserver = Observer<Result<List<Vehicle>>> {
+        when (it) {
+            is Result.Loading -> fullscreenLoading.value = true
+
+            is Result.Success -> {
+                vehiclesList.clear()
+                vehiclesList.addAll(it.data)
+                showVehiclesOnMap()
+                fullscreenLoading.value = false
+            }
+
+            is Result.Error -> {
+                fullscreenLoading.value = false
+            }
+        }
+    }
+
     init {
-        observeWithInitUpdate(
+        observe(
             gpsStateMonitor.hasGps,
             Observer {
                 if (permissionProvider.isLocationAvailableAndAccessible().not()) {
@@ -26,5 +62,52 @@ class DashboardViewModel @Inject constructor(
                 }
             }
         )
+
+        observe(
+            mapProvider.onMapReady,
+            Observer {
+                exploreVehicles()
+            }
+        )
+    }
+
+    private fun exploreVehicles() {
+        if (permissionProvider.isLocationAvailableAndAccessible().not()) return
+
+        observe(
+            exploreSingleSourceOfTruthDataSource.exploreVehicles(),
+            vehiclesListResponseObserver
+        )
+    }
+
+    private fun showVehiclesOnMap() {
+        if (mapProvider.isMapReady().not() || vehiclesList.isEmpty()) return
+
+        removeMapMarkers()
+
+        vehiclesList.forEach {
+            vehiclesMarkers.add(
+                mapFunctionsImpl.addMarker(
+                    it.toMarker()
+                )
+            )
+        }
+
+        val latLngBounds: LatLngBounds.Builder = LatLngBounds.Builder()
+            .includes(vehiclesList.toLocations())
+
+        mapFunctionsImpl.moveCameraSmoothly(
+            CameraUpdateFactory.newLatLngBounds(
+                latLngBounds.build(),
+                resourceManager.getDimenPixel(R.dimen.map_bound_padding)
+            )
+        )
+    }
+
+    private fun removeMapMarkers() {
+        vehiclesMarkers.forEach {
+            mapFunctionsImpl.removeMarker(it)
+        }
+        vehiclesMarkers.clear()
     }
 }
