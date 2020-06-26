@@ -140,6 +140,17 @@ class DashboardViewModel @Inject constructor(
         )
     }
 
+    fun focusOnVehicles() {
+        if (mapProvider.isMapReady().not()) return
+
+        if (vehiclesList.isEmpty()) {
+            exploreVehicles()
+            return
+        }
+
+        showVehiclesOnMap()
+    }
+
     companion object {
         private const val BOUND_CAMERA_TO_POINT_DELAY_MILLI_SECOND = 500L
     }

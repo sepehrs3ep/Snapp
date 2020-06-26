@@ -23,6 +23,17 @@
         android:layout_gravity="bottom|start"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="20dp"
+        android:background="?attr/selectableItemBackground"
         android:src="@drawable/ic_snapp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/showVehiclesBtn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="?attr/selectableItemBackground"
+        android:src="@drawable/ic_car" />
 
 </FrameLayout>

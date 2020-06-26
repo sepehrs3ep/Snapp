@@ -51,6 +51,10 @@ class DashboardFragment : BaseMapFragment() {
             viewModel.navigateToExploreList()
         }
 
+        showVehiclesBtn.setOnClickListener {
+            viewModel.focusOnVehicles()
+        }
+
         connectionStateMonitor.hasInternet.observe(
             viewLifecycleOwner,
             Observer {
