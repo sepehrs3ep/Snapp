@@ -1,6 +1,7 @@
 package ir.snapp.assignment.models.vehicle
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
@@ -11,7 +12,7 @@ import com.google.gson.annotations.SerializedName
  * Tehran, Iran.
  * Copyright © 2020 by Sepehr Sadri. All rights reserved.
  */
-@Entity(tableName = "Vehicle")
+@Entity(tableName = "Vehicle", indices = [Index(value = ["lat", "lng"], unique = true)])
 data class Vehicle(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
