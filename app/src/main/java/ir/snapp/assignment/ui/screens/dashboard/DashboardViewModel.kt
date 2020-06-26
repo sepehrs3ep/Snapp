@@ -49,6 +49,10 @@ class DashboardViewModel @Inject constructor(
 
             is Result.Error -> {
                 fullscreenLoading.value = false
+
+                if (vehiclesList.isNotEmpty()) {
+                    navigateToExploreList()
+                }
             }
         }
     }
@@ -66,7 +70,9 @@ class DashboardViewModel @Inject constructor(
         observe(
             mapProvider.onMapReady,
             Observer {
-                exploreVehicles()
+                if (it) {
+                    exploreVehicles()
+                }
             }
         )
     }
@@ -109,5 +115,11 @@ class DashboardViewModel @Inject constructor(
             mapFunctionsImpl.removeMarker(it)
         }
         vehiclesMarkers.clear()
+    }
+
+    fun navigateToExploreList() {
+        navigate(
+            DashboardFragmentDirections.navigateToExploreList()
+        )
     }
 }

@@ -10,6 +10,7 @@ import ir.snapp.assignment.R
 import ir.snapp.assignment.components.map.MapProvider
 import ir.snapp.assignment.ui.navigation.NavigationViewModel
 import ir.snapp.assignment.ui.utils.BaseMapFragment
+import kotlinx.android.synthetic.main.fragment_dashboard.*
 import javax.inject.Inject
 
 class DashboardFragment : BaseMapFragment() {
@@ -34,5 +35,13 @@ class DashboardFragment : BaseMapFragment() {
             mapProvider.onMapReady(it)
         }
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        showExploreListBtn.setOnClickListener {
+            viewModel.navigateToExploreList()
+        }
     }
 }

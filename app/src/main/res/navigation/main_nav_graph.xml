@@ -20,10 +20,20 @@
         app:popEnterAnim="@anim/fragment_open_enter"
         app:popExitAnim="@anim/fragment_open_exit" />
 
+    <action
+        android:id="@+id/navigate_to_explore_list"
+        app:destination="@id/exploreListBottomSheet" />
+
     <fragment
         android:id="@+id/requirementSatisfierFragment"
         android:name="ir.snapp.assignment.ui.screens.requirement_satisfier.RequirementSatisfierFragment"
         android:label="requirement_satisfier_fragment"
         tools:layout="@layout/fragment_requirement_satisfier" />
+
+    <dialog
+        android:id="@+id/exploreListBottomSheet"
+        android:name="ir.snapp.assignment.ui.screens.dashboard.fragments.explore_list.ExploreListBottomSheetDialogFragment"
+        android:label="explore_list_bottom_sheet"
+        tools:layout="@layout/explore_list_bottom_sheet_dialog_fragment" />
 
 </navigation>
