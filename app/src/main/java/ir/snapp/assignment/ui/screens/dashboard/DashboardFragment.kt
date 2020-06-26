@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import ir.snapp.assignment.R
 import ir.snapp.assignment.components.map.MapProvider
 import ir.snapp.assignment.ui.navigation.NavigationViewModel
 import ir.snapp.assignment.ui.utils.BaseMapFragment
+import ir.snapp.assignment.utils.network.ConnectionStateMonitor
 import kotlinx.android.synthetic.main.fragment_dashboard.*
+import kotlinx.android.synthetic.main.no_internet_connection_layout.*
 import javax.inject.Inject
 
 class DashboardFragment : BaseMapFragment() {
@@ -19,6 +22,9 @@ class DashboardFragment : BaseMapFragment() {
 
     @Inject
     lateinit var mapProvider: MapProvider
+
+    @Inject
+    lateinit var connectionStateMonitor: ConnectionStateMonitor
 
     private val viewModel: DashboardViewModel by viewModels { viewModelFactory }
     override fun getViewModel(): NavigationViewModel = viewModel
@@ -42,6 +48,18 @@ class DashboardFragment : BaseMapFragment() {
 
         showExploreListBtn.setOnClickListener {
             viewModel.navigateToExploreList()
+        }
+
+        connectionStateMonitor.hasInternet.observe(
+            viewLifecycleOwner,
+            Observer {
+                val visibility = if (it) View.GONE else View.VISIBLE
+                noInternetRoot.visibility = visibility
+            }
+        )
+
+        crossIv.setOnClickListener {
+            noInternetRoot.visibility = View.GONE
         }
     }
 }

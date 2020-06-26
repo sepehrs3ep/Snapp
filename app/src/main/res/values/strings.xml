@@ -22,4 +22,6 @@
     <string name="services">services</string>
 
     <string name="explore_list_failed">Failed to get snapp services !</string>
+
+    <string name="no_internet_dashboard">Oops! Your Network connection failed</string>
 </resources>
