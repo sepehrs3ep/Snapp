@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import ir.snapp.assignment.di.screen.dashboard.DashboardActivityModule
 import ir.snapp.assignment.ui.screens.dashboard.DashboardActivity
+import ir.snapp.assignment.ui.screens.splash.SplashActivity
 
 /**
  * Created by Sepehr Sadri on 6/25/2020.
@@ -21,4 +22,8 @@ abstract class ActivityModule {
     )
     @PerActivity
     abstract fun contributeDashboardActivity(): DashboardActivity
+
+    @ContributesAndroidInjector
+    @PerActivity
+    abstract fun contributeSplashActivity(): SplashActivity
 }
