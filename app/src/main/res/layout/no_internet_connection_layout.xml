@@ -1,0 +1,28 @@
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/noInternetRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="top"
+    android:background="@drawable/no_internet_dashboard_background"
+    android:orientation="horizontal"
+    android:visibility="gone">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/crossIv"
+        android:layout_width="13dp"
+        android:layout_height="13dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:tint="@color/white"
+        app:srcCompat="@drawable/ic_cross" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/no_internet_dashboard"
+        android:textAppearance="@style/TextAppearance.App.Subtitle3.White" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

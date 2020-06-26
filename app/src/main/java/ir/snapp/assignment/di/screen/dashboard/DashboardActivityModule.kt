@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import ir.snapp.assignment.di.screen.PerFragment
 import ir.snapp.assignment.ui.screens.dashboard.DashboardFragment
+import ir.snapp.assignment.ui.screens.dashboard.fragments.explore_list.ExploreListBottomSheetDialogFragment
 import ir.snapp.assignment.ui.screens.requirement_satisfier.RequirementSatisfierFragment
 
 /**
@@ -23,4 +24,9 @@ abstract class DashboardActivityModule {
     @PerFragment
     @ContributesAndroidInjector
     abstract fun contributeRequirementSatisfierFragment(): RequirementSatisfierFragment
+
+    @PerFragment
+    @ContributesAndroidInjector
+    abstract fun contributeExploreListBottomSheetDialogFragment():
+            ExploreListBottomSheetDialogFragment
 }

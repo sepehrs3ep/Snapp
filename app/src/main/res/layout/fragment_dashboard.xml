@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context="ir.snapp.assignment.ui.screens.dashboard.DashboardFragment">
 
     <com.mapbox.mapboxsdk.maps.MapView
@@ -12,5 +13,27 @@
         mapbox:mapbox_cameraTargetLat="35.701803"
         mapbox:mapbox_cameraTargetLng="51.358124"
         mapbox:mapbox_cameraZoom="8" />
+
+    <include layout="@layout/no_internet_connection_layout" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/showExploreListBtn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom|start"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="?attr/selectableItemBackground"
+        android:src="@drawable/ic_snapp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/showVehiclesBtn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="?attr/selectableItemBackground"
+        android:src="@drawable/ic_car" />
 
 </FrameLayout>
