@@ -1,6 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext.kotlin_version = "1.3.72"
+    ext.navigation = '2.3.0-beta01'
     repositories {
         google()
         jcenter()
@@ -8,6 +9,7 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:4.0.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigation"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -23,4 +25,50 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+ext {
+    // Sdk and tools
+    minSdkVersion = 21
+    targetSdkVersion = 29
+    compileSdkVersion = 29
+    buildToolsVersion = "29.0.3"
+
+    // Kotlin
+    kotlin = '1.3.72'
+
+    // App dependencies
+    dagger = '2.27'
+    gson = '2.8.6'
+    retrofit = '2.7.1'
+    okHttp = '3.14.4'
+    timber = '4.7.1'
+    room = '2.2.5'
+    gmsLocation = '12.0.1'
+    coroutines = '1.3.3'
+    map = '9.2.0'
+
+    // Test dependencies
+    testJUnit = '4.12'
+    testAndroidXJUnit = '1.1.1'
+    testEspresso = '3.2.0'
+    mockito = '2.2.0'
+    mockitoInline = '3.3.0'
+
+    // ktLint
+    ktlint = '9.2.1'
+
+    // AndroidX
+    androidX = [
+            coreKTX           : '1.3.0',
+            appCompat         : '1.1.0',
+            constraintlayout  : '1.1.3',
+            lifecycle         : '2.2.0',
+            fragment          : '1.2.4',
+            navigation        : '2.3.0-beta01',
+            recyclerView      : '1.1.0',
+            material          : '1.2.0-beta01',
+            swipeRefreshLayout: '1.1.0-rc01',
+    ]
 }
