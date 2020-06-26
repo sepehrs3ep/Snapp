@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context="ir.snapp.assignment.ui.screens.dashboard.DashboardFragment">
 
     <com.mapbox.mapboxsdk.maps.MapView
@@ -12,6 +13,8 @@
         mapbox:mapbox_cameraTargetLat="35.701803"
         mapbox:mapbox_cameraTargetLng="51.358124"
         mapbox:mapbox_cameraZoom="8" />
+
+    <include layout="@layout/no_internet_connection_layout" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/showExploreListBtn"
