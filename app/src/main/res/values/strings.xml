@@ -18,4 +18,8 @@
     <string name="error_no_internet">no internet connection</string>
     <string name="error_server_error">server error happened</string>
     <string name="error_unknown">problem happened with your request</string>
+
+    <string name="services">services</string>
+
+    <string name="explore_list_failed">Failed to get snapp services !</string>
 </resources>
