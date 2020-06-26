@@ -1,6 +1,7 @@
 package ir.snapp.assignment.ui.screens.dashboard
 
 import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import com.mapbox.mapboxsdk.annotations.Marker
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLngBounds
@@ -16,6 +17,8 @@ import ir.snapp.assignment.ui.navigation.NavigationViewModel
 import ir.snapp.assignment.utils.gps.GpsStateMonitor
 import ir.snapp.assignment.utils.map.toLocations
 import ir.snapp.assignment.utils.map.toMarker
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -87,7 +90,10 @@ class DashboardViewModel @Inject constructor(
     }
 
     private fun showVehiclesOnMap() {
-        if (mapProvider.isMapReady().not() || vehiclesList.isEmpty()) return
+        if (
+            mapProvider.isMapReady().not() ||
+            vehiclesList.isEmpty()
+        ) return
 
         removeMapMarkers()
 
@@ -99,15 +105,23 @@ class DashboardViewModel @Inject constructor(
             )
         }
 
-        val latLngBounds: LatLngBounds.Builder = LatLngBounds.Builder()
-            .includes(vehiclesList.toLocations())
+        boundCameraToPoints()
+    }
 
-        mapFunctionsImpl.moveCameraSmoothly(
-            CameraUpdateFactory.newLatLngBounds(
-                latLngBounds.build(),
-                resourceManager.getDimenPixel(R.dimen.map_bound_padding)
+    private fun boundCameraToPoints() {
+        viewModelScope.launch {
+            delay(BOUND_CAMERA_TO_POINT_DELAY_MILLI_SECOND)
+
+            val latLngBounds: LatLngBounds.Builder = LatLngBounds.Builder()
+                .includes(vehiclesList.toLocations())
+
+            mapFunctionsImpl.moveCameraSmoothly(
+                CameraUpdateFactory.newLatLngBounds(
+                    latLngBounds.build(),
+                    resourceManager.getDimenPixel(R.dimen.map_bound_padding)
+                )
             )
-        )
+        }
     }
 
     private fun removeMapMarkers() {
@@ -121,5 +135,9 @@ class DashboardViewModel @Inject constructor(
         navigate(
             DashboardFragmentDirections.navigateToExploreList()
         )
+    }
+
+    companion object {
+        private const val BOUND_CAMERA_TO_POINT_DELAY_MILLI_SECOND = 500L
     }
 }
