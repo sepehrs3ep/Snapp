@@ -15,6 +15,7 @@ import ir.snapp.assignment.data.utils.Result
 import ir.snapp.assignment.models.vehicle.Vehicle
 import ir.snapp.assignment.ui.navigation.NavigationViewModel
 import ir.snapp.assignment.utils.gps.GpsStateMonitor
+import ir.snapp.assignment.utils.live_data.SingleLiveEvent
 import ir.snapp.assignment.utils.map.toLocations
 import ir.snapp.assignment.utils.map.toMarker
 import kotlinx.coroutines.delay
@@ -35,6 +36,7 @@ class DashboardViewModel @Inject constructor(
     private val mapFunctionsImpl: MapFunctionsImpl,
     private val resourceManager: ResourceManager
 ) : NavigationViewModel() {
+    val messageEvent = SingleLiveEvent<String>()
 
     private val vehiclesList: MutableList<Vehicle> = ArrayList()
     private val vehiclesMarkers: MutableList<Marker> = ArrayList()
@@ -52,6 +54,7 @@ class DashboardViewModel @Inject constructor(
 
             is Result.Error -> {
                 fullscreenLoading.value = false
+                messageEvent.value = it.error.message
 
                 if (vehiclesList.isNotEmpty()) {
                     navigateToExploreList()

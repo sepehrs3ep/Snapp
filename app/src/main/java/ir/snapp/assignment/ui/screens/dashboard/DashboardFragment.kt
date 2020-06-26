@@ -11,6 +11,7 @@ import ir.snapp.assignment.R
 import ir.snapp.assignment.components.map.MapProvider
 import ir.snapp.assignment.ui.navigation.NavigationViewModel
 import ir.snapp.assignment.ui.utils.BaseMapFragment
+import ir.snapp.assignment.ui.utils.toast
 import ir.snapp.assignment.utils.network.ConnectionStateMonitor
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import kotlinx.android.synthetic.main.no_internet_connection_layout.*
@@ -61,5 +62,14 @@ class DashboardFragment : BaseMapFragment() {
         crossIv.setOnClickListener {
             noInternetRoot.visibility = View.GONE
         }
+
+        viewModel.messageEvent.observe(
+            viewLifecycleOwner,
+            Observer {
+                it?.let {
+                    requireContext().toast(it)
+                }
+            }
+        )
     }
 }
