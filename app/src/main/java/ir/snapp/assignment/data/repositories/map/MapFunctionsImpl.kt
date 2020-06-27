@@ -21,7 +21,7 @@ class MapFunctionsImpl @Inject constructor(
     private val markersList: MutableList<Marker> = ArrayList()
 
     override fun moveCameraSmoothly(cameraUpdate: CameraUpdate) {
-        mapProvider.map.animateCamera(cameraUpdate, CAMERA_ANIMATE_DELAY_MILLI_SECOND)
+        mapProvider.map!!.animateCamera(cameraUpdate, CAMERA_ANIMATE_DELAY_MILLI_SECOND)
     }
 
     override fun addMarker(marker: ir.snapp.assignment.models.Marker): Marker {

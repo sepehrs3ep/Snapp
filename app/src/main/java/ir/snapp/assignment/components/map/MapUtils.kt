@@ -39,7 +39,7 @@ class MapUtils @Inject constructor(
         }
 
         val picassoMarker = PicassoMarker(
-            mapProvider.map.addMarker(markerOption),
+            mapProvider.map!!.addMarker(markerOption),
             iconFactory
         )
 

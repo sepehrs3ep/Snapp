@@ -76,4 +76,9 @@ class DashboardFragment : BaseMapFragment() {
             }
         )
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mapProvider.onAvailabilityChanged(false)
+    }
 }

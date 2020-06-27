@@ -1,6 +1,7 @@
 package ir.snapp.assignment.ui.screens.dashboard
 
 import androidx.lifecycle.Observer
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import com.mapbox.mapboxsdk.annotations.Marker
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
@@ -15,6 +16,7 @@ import ir.snapp.assignment.data.utils.Result
 import ir.snapp.assignment.models.vehicle.Vehicle
 import ir.snapp.assignment.ui.navigation.NavigationViewModel
 import ir.snapp.assignment.utils.gps.GpsStateMonitor
+import ir.snapp.assignment.utils.isFalseOrNull
 import ir.snapp.assignment.utils.live_data.SingleLiveEvent
 import ir.snapp.assignment.utils.map.toLocations
 import ir.snapp.assignment.utils.map.toMarker
@@ -41,6 +43,8 @@ class DashboardViewModel @Inject constructor(
     private val vehiclesList: MutableList<Vehicle> = ArrayList()
     private val vehiclesMarkers: MutableList<Marker> = ArrayList()
 
+    private var isFetching = false
+
     private val vehiclesListResponseObserver = Observer<Result<List<Vehicle>>> {
         when (it) {
             is Result.Loading -> fullscreenLoading.value = true
@@ -48,16 +52,27 @@ class DashboardViewModel @Inject constructor(
             is Result.Success -> {
                 vehiclesList.clear()
                 vehiclesList.addAll(it.data)
-                showVehiclesOnMap()
-                fullscreenLoading.value = false
+                viewModelScope.launch {
+                    delay(SHOW_VEHICLES_DELAY_MILLI_SECOND)
+
+                    showVehiclesOnMap()
+
+                    fullscreenLoading.value = false
+                    isFetching = false
+                }
             }
 
             is Result.Error -> {
                 fullscreenLoading.value = false
                 messageEvent.value = it.error.message
+                isFetching = false
 
                 if (vehiclesList.isNotEmpty()) {
-                    navigateToExploreList()
+                    viewModelScope.launch {
+                        delay(BOUND_CAMERA_TO_POINT_DELAY_MILLI_SECOND)
+
+                        navigateToExploreList()
+                    }
                 }
             }
         }
@@ -74,9 +89,13 @@ class DashboardViewModel @Inject constructor(
         )
 
         observe(
-            mapProvider.onMapReady,
+            mapProvider
+                .mapAvailability
+                .distinctUntilChanged(),
             Observer {
-                if (it) {
+                if (it.isFalseOrNull()) {
+                    removeMapMarkers()
+                } else {
                     exploreVehicles()
                 }
             }
@@ -84,7 +103,12 @@ class DashboardViewModel @Inject constructor(
     }
 
     private fun exploreVehicles() {
-        if (permissionProvider.isLocationAvailableAndAccessible().not()) return
+        if (
+            permissionProvider.isLocationAvailableAndAccessible().not() ||
+            isFetching
+        ) return
+
+        isFetching = true
 
         observe(
             exploreSingleSourceOfTruthDataSource.exploreVehicles(),
@@ -100,6 +124,12 @@ class DashboardViewModel @Inject constructor(
 
         removeMapMarkers()
 
+        drawMarkers()
+
+        boundCameraToPoints()
+    }
+
+    private fun drawMarkers() {
         vehiclesList.forEach {
             vehiclesMarkers.add(
                 mapFunctionsImpl.addMarker(
@@ -107,8 +137,6 @@ class DashboardViewModel @Inject constructor(
                 )
             )
         }
-
-        boundCameraToPoints()
     }
 
     private fun boundCameraToPoints() {
@@ -152,6 +180,7 @@ class DashboardViewModel @Inject constructor(
     }
 
     companion object {
+        private const val SHOW_VEHICLES_DELAY_MILLI_SECOND = 1000L
         private const val BOUND_CAMERA_TO_POINT_DELAY_MILLI_SECOND = 500L
     }
 }

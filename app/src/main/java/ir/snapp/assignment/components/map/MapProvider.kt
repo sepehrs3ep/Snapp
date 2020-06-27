@@ -19,10 +19,10 @@ import javax.inject.Singleton
  */
 @Singleton
 class MapProvider @Inject constructor() {
-    lateinit var map: MapboxMap
+    var map: MapboxMap? = null
 
-    private val _onMapReady = MutableLiveData(false)
-    val onMapReady: LiveData<Boolean> = _onMapReady
+    private val _mapAvailability = MutableLiveData(false)
+    val mapAvailability: LiveData<Boolean> = _mapAvailability
 
     companion object {
         fun init(context: Context) {
@@ -37,10 +37,17 @@ class MapProvider @Inject constructor() {
             setStyle(
                 Style.MAPBOX_STREETS
             ) {
-                _onMapReady.value = true
+                onAvailabilityChanged(true)
             }
         }
     }
 
-    fun isMapReady() = this::map.isInitialized
+    fun onAvailabilityChanged(availability: Boolean) {
+        _mapAvailability.value = availability
+        if (availability.not()) {
+            this.map = null
+        }
+    }
+
+    fun isMapReady() = this.map != null
 }
