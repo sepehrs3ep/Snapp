@@ -1,13 +1,13 @@
 Snapp!
 =========================
 
-A Snapp app is Sepehr Sadri's project assignment for applying as an android developer position at Snapp.
+Snapp - show groups of vehicles on map!
 
 
 Introduction
 ------------
 
-The application uses Clean Architecture based on MVVM + Clean.
+The application uses Clean Architecture based on MVVM and Repository patterns.
 
 The application is written entirely in Kotlin.
 
